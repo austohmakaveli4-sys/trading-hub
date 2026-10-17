@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EarnLink Africa | Pro Trading Hub</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#ecfdf5',
+                            500: '#10b981',
+                            600: '#059669',
+                            900: '#064e3b',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #0f172a;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #334155;
+            border-radius: 3px;
+        }
+    </style>
+</head>
+<body class="bg-slate-950 text-slate-100 font-sans antialiased min-h-screen flex flex-col">
+
+    <!-- TOP HEADER -->
+    <header class="bg-slate-900 border-b border-slate-800 sticky top-0 z-40">
+        <div class="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <div class="bg-gradient-to-tr from-emerald-500 to-teal-400 p-2 rounded-xl text-slate-950 font-bold">
+                    <i data-lucide="trending-up" class="w-6 h-6"></i>
+                </div>
+                <div>
+                    <h1 class="font-bold text-lg leading-none bg-gradient-to-r from-emerald-400 to-teal-200 bg-clip-text text-transparent">EarnLink Africa</h1>
+                    <span class="text-xs text-slate-400 font-medium">Trading Hub & Risk Tools</span>
+                </div>
+            </div>
+
+            <!-- Header Quick Actions -->
+            <div class="flex items-center space-x-3">
+                <a href="#brokers" class="hidden sm:flex items-center space-x-2 bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 px-3 py-1.5 rounded-lg text-sm font-semibold transition">
+                    <i data-lucide="wallet" class="w-4 h-4"></i>
+                    <span>M-Pesa Brokers</span>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- MAIN DASHBOARD CONTENT -->
+    <main class="flex-grow max-w-7xl w-full mx-auto p-4 md:p-6 grid grid-cols-1 lg:grid-cols-12 gap-6">
+
+        <!-- LEFT COLUMN: Live Chart & Market Tools (8 Cols) -->
+        <div class="lg:col-span-8 space-y-6">
+            
+            <!-- Live TradingView Chart Widget -->
+            <div class="bg-slate-900 border border-slate-800 rounded-2xl p-4 shadow-xl">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="flex items-center space-x-2">
+                        <i data-lucide="bar-chart-3" class="w-5 h-5 text-emerald-400"></i>
+                        <h2 class="font-semibold text-slate-200">Live Market Chart</h2>
+                    </div>
+                    <select id="pairSelect" onchange="changePair(this.value)" class="bg-slate-800 text-xs font-semibold text-slate-200 border border-slate-700 rounded-lg px-3 py-1.5 focus:outline-none focus:border-emerald-500">
+                        <option value="FX:EURUSD">EUR/USD</option>
+                        <option value="FX:GBPUSD">GBP/USD</option>
+                        <option value="OANDA:XAUUSD">GOLD (XAU/USD)</option>
+                        <option value="FX:USDJPY">USD/JPY</option>
+                        <option value="FX:GBPJPY">GBP/JPY</option>
+                    </select>
+                </div>
+                
+                <!-- TradingView Embed Container -->
+                <div class="w-full h-[450px] rounded-xl overflow-hidden border border-slate-800" id="tv_chart_container">
+                    <iframe id="tv_frame" src="https://s.tradingview.com/widgetembed/?frameElementId=tradingview_1&symbol=FX%3AEURUSD&interval=D&hidesidetoolbar=0&symboledit=1&saveimage=1&toolbarbg=f1f3f6&studies=[]&theme=dark&style=1&timezone=Etc%2FUTC" class="w-full h-full border-0"></iframe>
+                </div>
+            </div>
+
+            <!-- Trade Execution Simulator -->
+            <div class="bg-slate-900 border border-slate-800 rounded-2xl p-5 shadow-xl">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="flex items-center space-x-2">
+                        <i data-lucide="cpu" class="w-5 h-5 text-emerald-400"></i>
+                        <h2 class="font-semibold text-slate-200">Paper Trading Simulator</h2>
+                    </div>
+                    <span class="text-xs bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 px-2 py-1 rounded-full font-mono">Demo Balance: $10,000</span>
+                </div>
+
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+                    <button onclick="executeSimulatedTrade('BUY')" class="bg-emerald-500 hover:bg-emerald-600 active:scale-95 text-slate-950 font-bold py-3 rounded-xl shadow-lg shadow-emerald-500/10 flex items-center justify-center space-x-2 transition">
+                        <i data-lucide="trending-up" class="w-5 h-5"></i>
+                        <span>BUY</span>
+                    </button>
+                    <button onclick="executeSimulatedTrade('SELL')" class="bg-rose-500 hover:bg-rose-600 active:scale-95 text-slate-950 font-bold py-3 rounded-xl shadow-lg shadow-rose-500/10 flex items-center justify-center space-x-2 transition">
+                        <i data-lucide="trending-down" class="w-5 h-5"></i>
+                        <span>SELL</span>
+                    </button>
+                    <div class="col-span-2 bg-slate-950 border border-slate-800 rounded-xl p-3 flex items-center justify-between">
+                        <span class="text-xs text-slate-400">Active Trade Status:</span>
+                        <span id="simStatus" class="text-xs font-mono font-semibold text-slate-300">No open positions</span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- RIGHT COLUMN: Risk Calculators & M-Pesa Brokers (4 Cols) -->
+        <div class="lg:col-span-4 space-y-6">
+
+            <!-- Lot Size & Risk Calculator -->
+            <div class="bg-slate-900 border border-slate-800 rounded-2xl p-5 shadow-xl space-y-4">
+                <div class="flex items-center space-x-2 border-b border-slate-800 pb-3">
+                    <i data-lucide="calculator" class="w-5 h-5 text-emerald-400"></i>
+                    <h2 class="font-semibold text-slate-200">Position Risk Calculator</h2>
+                </div>
+
+                <div class="space-y-3">
+                    <div>
+                        <label class="block text-xs text-slate-400 mb-1">Account Balance ($)</label>
+                        <input type="number" id="accBalance" value="1000" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-sm text-slate-200 focus:outline-none focus:border-emerald-500">
+                    </div>
+                    <div>
+                        <label class="block text-xs text-slate-400 mb-1">Risk Percentage (%)</label>
+                        <input type="number" id="riskPercent" value="2" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-sm text-slate-200 focus:outline-none focus:border-emerald-500">
+                    </div>
+                    <div>
+                        <label class="block text-xs text-slate-400 mb-1">Stop Loss (Pips)</label>
+                        <input type="number" id="stopLossPips" value="30" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-sm text-slate-200 focus:outline-none focus:border-emerald-500">
+                    </div>
+
+                    <button onclick="calculateLotSize()" class="w-full bg-slate-800 hover:bg-slate-700 text-emerald-400 font-semibold py-2.5 rounded-xl border border-slate-700 text-sm transition">
+                        Calculate Lot Size
+                    </button>
+
+                    <!-- Calculation Results -->
+                    <div class="bg-slate-950 border border-slate-800/80 rounded-xl p-3 space-y-2 mt-3">
+                        <div class="flex justify-between text-xs">
+                            <span class="text-slate-400">Risk Amount:</span>
+                            <span id="riskAmountResult" class="font-mono text-emerald-400 font-semibold">$20.00</span>
+                        </div>
+                        <div class="flex justify-between text-xs">
+                            <span class="text-slate-400">Recommended Lot Size:</span>
+                            <span id="lotSizeResult" class="font-mono text-emerald-400 font-bold">0.07 Lots</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recommended M-Pesa Forex Brokers -->
+            <div id="brokers" class="bg-slate-900 border border-slate-800 rounded-2xl p-5 shadow-xl space-y-4">
+                <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+                    <div class="flex items-center space-x-2">
+                        <i data-lucide="shield-check" class="w-5 h-5 text-emerald-400"></i>
+                        <h2 class="font-semibold text-slate-200">CMA-Regulated Brokers</h2>
+                    </div>
+                    <span class="text-[10px] bg-teal-500/10 text-teal-400 border border-teal-500/20 px-2 py-0.5 rounded">M-Pesa Ready</span>
+                </div>
+
+                <div class="space-y-3">
+                    
+                    <!-- FXPesa -->
+                    <div class="bg-slate-950 border border-slate-800 rounded-xl p-3 flex items-center justify-between hover:border-slate-700 transition">
+                        <div>
+                            <h3 class="font-bold text-sm text-slate-200">FXPesa</h3>
+                            <p class="text-[11px] text-slate-400">Local M-Pesa Instant Deposit</p>
+                        </div>
+                        <a href="https://www.fxpesa.com" target="_blank" class="bg-emerald-500 hover:bg-emerald-600 text-slate-950 text-xs font-bold px-3 py-2 rounded-lg transition">
+                            Open Account
+                        </a>
+                    </div>
+
+                    <!-- Exness -->
+                    <div class="bg-slate-950 border border-slate-800 rounded-xl p-3 flex items-center justify-between hover:border-slate-700 transition">
+                        <div>
+                            <h3 class="font-bold text-sm text-slate-200">Exness Africa</h3>
+                            <p class="text-[11px] text-slate-400">Instant Withdrawals & MT5</p>
+                        </div>
+                        <a href="https://www.exness.com" target="_blank" class="bg-emerald-500 hover:bg-emerald-600 text-slate-950 text-xs font-bold px-3 py-2 rounded-lg transition">
+                            Open Account
+                        </a>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="bg-slate-900 border-t border-slate-800 py-6 text-center text-xs text-slate-500">
+        <p>© 2026 EarnLink Africa. All rights reserved. High-Risk Financial Warning: Forex & CFD trading involves risk.</p>
+    </footer>
+
+    <!-- INTERACTIVE JAVASCRIPT -->
+    <script>
+        // Initialize Icons
+        lucide.createIcons();
+
+        // Switch Chart Pair
+        function changePair(symbol) {
+            const frame = document.getElementById('tv_frame');
+            frame.src = `https://s.tradingview.com/widgetembed/?frameElementId=tradingview_1&symbol=${encodeURIComponent(symbol)}&interval=D&hidesidetoolbar=0&symboledit=1&saveimage=1&toolbarbg=f1f3f6&studies=[]&theme=dark&style=1&timezone=Etc%2FUTC`;
+        }
+
+        // Risk Calculator Logic
+        function calculateLotSize() {
+            const balance = parseFloat(document.getElementById('accBalance').value) || 0;
+            const riskPercent = parseFloat(document.getElementById('riskPercent').value) || 0;
+            const stopLossPips = parseFloat(document.getElementById('stopLossPips').value) || 1;
+
+            const riskAmount = (balance * (riskPercent / 100));
+            // Assuming standard Forex pair pip value ($10 per standard lot)
+            const lotSize = (riskAmount / (stopLossPips * 10));
+
+            document.getElementById('riskAmountResult').innerText = `$${riskAmount.toFixed(2)}`;
+            document.getElementById('lotSizeResult').innerText = `${lotSize.toFixed(2)} Lots`;
+        }
+
+        // Paper Trading Simulator Action
+        function executeSimulatedTrade(type) {
+            const statusEl = document.getElementById('simStatus');
+            const colorClass = type === 'BUY' ? 'text-emerald-400' : 'text-rose-400';
+            statusEl.className = `text-xs font-mono font-semibold ${colorClass}`;
+            statusEl.innerText = `Active ${type} Order Placed @ Market Price`;
+        }
+    </script>
+</body>
+  </html>
+  
